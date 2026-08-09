@@ -1,6 +1,7 @@
 import { defineConfig } from "@playwright/test";
 
-const PORT = process.env.PORT ?? "4123";
+const WEB_PORT = process.env.WEB_PORT ?? "4123";
+const API_PORT = process.env.API_PORT ?? "4124";
 const FEATURES = process.env.FEATURES ?? "companies,contacts,deals";
 // PW_VIDEO=1 records a video of every test (with slight slow-motion so the
 // interactions are watchable). Videos land in test-results/<test>/video.webm.
@@ -15,21 +16,34 @@ export default defineConfig({
   workers: 1,
   reporter: [["list"]],
   use: {
-    baseURL: `http://127.0.0.1:${PORT}`,
+    baseURL: `http://127.0.0.1:${WEB_PORT}`,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: RECORD_VIDEO ? "on" : "off",
     launchOptions: RECORD_VIDEO ? { slowMo: 250 } : {},
   },
-  webServer: {
-    command: "node server.js",
-    port: Number(PORT),
-    reuseExistingServer: false,
-    env: {
-      PORT,
-      FEATURES,
-      DB_PATH: `.tmp/e2e-${FEATURES.replaceAll(",", "-")}.db`,
-      DB_RESET: "1",
+  webServer: [
+    {
+      // NestJS API with only the enabled feature slices (sandbox mode).
+      command: "npx tsx apps/api/main.ts",
+      port: Number(API_PORT),
+      reuseExistingServer: false,
+      env: {
+        PORT: API_PORT,
+        FEATURES,
+        DB_PATH: `.tmp/e2e-${FEATURES.replaceAll(",", "-")}.db`,
+        DB_RESET: "1",
+      },
     },
-  },
+    {
+      // Next.js frontend (production build; scripts/start-web builds if needed).
+      command: `bash scripts/start-web ${WEB_PORT}`,
+      port: Number(WEB_PORT),
+      reuseExistingServer: false,
+      timeout: 240_000,
+      env: {
+        API_URL: `http://127.0.0.1:${API_PORT}`,
+      },
+    },
+  ],
 });

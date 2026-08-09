@@ -16,16 +16,16 @@ backend:
     - contacts
 
 provides:
-  - contracts/contact-directory.js (ContactDirectory)
+  - contracts/contact-directory.ts (ContactDirectory, CONTACT_DIRECTORY token)
 
 requires:
   - companies (via CompanyDirectory contract)
 
 sandbox:
-  run: FEATURES=contacts npm run dev
+  run: scripts/feature-dev contacts
 
 test_adapters:
-  company_directory: fixtures/fake-company-directory.js
+  company_directory: fixtures/fake-company-directory.ts
 
 e2e:
   smoke:

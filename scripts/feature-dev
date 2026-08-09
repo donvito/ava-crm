@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Start one feature's sandbox: scripts/feature-dev <companies|contacts|deals>
-# Missing cross-feature dependencies are replaced by fake adapters.
+# Boots the NestJS API with only that feature (fake adapters for missing
+# dependencies) plus the Next.js dev server.
 set -euo pipefail
 
 feature="${1:?usage: scripts/feature-dev <feature-name>}"
@@ -9,4 +10,7 @@ if [ ! -d "features/$feature" ]; then
   exit 1
 fi
 
-FEATURES="$feature" DB_PATH=".tmp/dev-$feature.db" exec node server.js
+FEATURES="$feature" DB_PATH=".tmp/dev-$feature.db" \
+  npx concurrently -n api,web -c blue,green \
+  "npx tsx watch apps/api/main.ts" \
+  "npx next dev apps/web -p 3000"

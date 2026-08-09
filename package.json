@@ -1,23 +1,39 @@
 {
   "name": "ava-crm",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "CRM app with a SQLite database, organized with Agent-Verifiable Architecture (AVA)",
-  "type": "module",
+  "description": "CRM app with a SQLite database — Next.js frontend, NestJS backend, organized with Agent-Verifiable Architecture (AVA)",
   "scripts": {
-    "dev": "node server.js",
-    "seed": "node scripts/seed.js",
+    "dev": "concurrently -n api,web -c blue,green \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "tsx watch apps/api/main.ts",
+    "dev:web": "next dev apps/web -p 3000",
+    "build:web": "next build apps/web",
+    "seed": "tsx scripts/seed.ts",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
     "test:feature": "bash scripts/feature-test",
-    "test:e2e:all": "bash scripts/feature-test companies && bash scripts/feature-test contacts && bash scripts/feature-test deals && playwright test journeys/e2e"
+    "test:e2e:all": "npm run build:web && bash scripts/feature-test companies && bash scripts/feature-test contacts && bash scripts/feature-test deals && playwright test journeys/e2e"
   },
   "dependencies": {
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/platform-express": "^11.1.0",
     "better-sqlite3": "^12.2.0",
-    "express": "^5.1.0"
+    "next": "^15.4.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "concurrently": "^9.1.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.0",
     "vitest": "^3.2.0"
   }
 }

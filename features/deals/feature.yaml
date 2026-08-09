@@ -24,11 +24,11 @@ requires:
   - companies (via CompanyDirectory contract)
 
 sandbox:
-  run: FEATURES=deals npm run dev
+  run: scripts/feature-dev deals
 
 test_adapters:
-  contact_directory: fixtures/fake-directories.js
-  company_directory: fixtures/fake-directories.js
+  contact_directory: fixtures/fake-directories.ts
+  company_directory: fixtures/fake-directories.ts
 
 e2e:
   smoke:

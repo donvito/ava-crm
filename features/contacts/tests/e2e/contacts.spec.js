@@ -27,7 +27,9 @@ test.describe("contacts", () => {
   test("user sees validation errors for missing fields", async ({ page }) => {
     await page.goto("/contacts/");
     await page.getByRole("button", { name: "Add contact" }).click();
-    const alert = page.getByRole("alert");
+    const alert = page
+      .getByRole("region", { name: "Add contact" })
+      .getByRole("alert");
     await expect(alert).toContainText("First name is required");
     await expect(alert).toContainText("Email is required");
   });
@@ -38,9 +40,9 @@ test.describe("contacts", () => {
     await page.getByLabel("Last name").fill("Email");
     await page.getByLabel("Email").fill("nope");
     await page.getByRole("button", { name: "Add contact" }).click();
-    await expect(page.getByRole("alert")).toContainText(
-      "Email must be a valid address"
-    );
+    await expect(
+      page.getByRole("region", { name: "Add contact" }).getByRole("alert")
+    ).toContainText("Email must be a valid address");
   });
 
   test("user can edit a contact", async ({ page }) => {

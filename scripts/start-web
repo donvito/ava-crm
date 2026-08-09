@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Start the Next.js frontend in production mode, building first if needed.
+set -euo pipefail
+
+port="${1:-3000}"
+if [ ! -f apps/web/.next/BUILD_ID ]; then
+  npx next build apps/web
+fi
+exec npx next start apps/web -p "$port"

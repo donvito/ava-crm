@@ -15,12 +15,12 @@ backend:
     - companies
 
 provides:
-  - contracts/company-directory.js (CompanyDirectory)
+  - contracts/company-directory.ts (CompanyDirectory, COMPANY_DIRECTORY token)
 
 requires: []
 
 sandbox:
-  run: FEATURES=companies npm run dev
+  run: scripts/feature-dev companies
 
 test_adapters: {}
 

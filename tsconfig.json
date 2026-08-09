@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": [
+    "apps/api/**/*.ts",
+    "app/platform/**/*.ts",
+    "features/**/backend/**/*.ts",
+    "features/**/contracts/**/*.ts",
+    "features/**/fixtures/**/*.ts",
+    "features/**/tests/unit/**/*.ts",
+    "features/**/tests/integration/**/*.ts",
+    "scripts/**/*.ts"
+  ]
+}

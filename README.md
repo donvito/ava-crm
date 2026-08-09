@@ -1,6 +1,6 @@
 # AVA CRM
 
-A small CRM built with **Express + SQLite** (better-sqlite3) and a dependency-free vanilla-JS frontend, organized with [Agent-Verifiable Architecture (AVA)](AGENTS.md): each feature is a bounded, independently runnable, independently verifiable slice.
+A small CRM built with a **Next.js** frontend, a **NestJS** backend, and a **SQLite** database (better-sqlite3), organized with [Agent-Verifiable Architecture (AVA)](AGENTS.md): each feature is a bounded, independently runnable, independently verifiable slice.
 
 ## Features
 
@@ -10,19 +10,26 @@ A small CRM built with **Express + SQLite** (better-sqlite3) and a dependency-fr
 | `contacts` | `/contacts` | Create, edit, and delete contacts; link them to companies |
 | `deals` | `/deals` | Pipeline of deals (lead → qualified → proposal → won/lost) linked to contacts and companies, with stage filtering |
 
-Cross-feature access happens only through explicit contracts:
+Cross-feature access happens only through explicit contracts, provided as NestJS injection tokens:
 
-- `features/companies/contracts/company-directory.js` — `CompanyDirectory` (used by contacts and deals)
-- `features/contacts/contracts/contact-directory.js` — `ContactDirectory` (used by deals)
+- `features/companies/contracts/company-directory.ts` — `CompanyDirectory` / `COMPANY_DIRECTORY` (used by contacts and deals)
+- `features/contacts/contracts/contact-directory.ts` — `ContactDirectory` / `CONTACT_DIRECTORY` (used by deals)
 
 When a feature runs in isolation, missing dependencies are replaced by deterministic fakes from that feature's `fixtures/` directory.
+
+## Architecture
+
+- **`apps/api`** — NestJS composition root. `AppModule.register()` assembles only the feature modules named in `FEATURES` and binds fake adapters for anything missing. Listens on port 3001.
+- **`apps/web`** — Next.js (App Router). Thin route files under `apps/web/app/*` render the real page components owned by each feature (`features/*/frontend/*.tsx`). `/api/*` is proxied to the NestJS server at runtime via a route handler (`API_URL` env). Listens on port 3000.
+- **`app/platform/database`** — SQLite connection + per-feature migration runner, exposed to Nest through the `DATABASE` token.
+- **`features/<name>/backend`** — NestJS module, controller, repository, validation, and migrations for that slice.
 
 ## Getting started
 
 ```bash
 npm install
 npm run seed   # optional demo data
-npm run dev    # full app on http://localhost:3000
+npm run dev    # NestJS API on :3001 + Next.js frontend on :3000
 ```
 
 The SQLite database lives at `data/crm.db` by default (`DB_PATH` overrides it, `DB_RESET=1` recreates it on boot).
@@ -45,20 +52,21 @@ npm run test:e2e               # all Playwright specs against the full app
 npm run test:e2e:all           # every feature sandbox suite + cross-feature journey
 ```
 
-Playwright starts its own server on port 4123 with a throwaway database in `.tmp/`, so tests never touch your dev data.
+Playwright starts its own servers (web on 4123, API on 4124) with a throwaway database in `.tmp/`, so tests never touch your dev data. Set `PW_VIDEO=1` to record a video of every test into `test-results/`.
 
 ## Layout
 
 ```text
+apps/
+  api/                 NestJS bootstrap (main.ts, dynamic AppModule)
+  web/                 Next.js app (thin routes + runtime API proxy)
 app/
-  platform/database/   SQLite connection + migration runner
-  platform/http/       Express app assembly from feature slices
-  ui/public/           Shared stylesheet and nav shell
+  platform/database/   SQLite connection + migration runner (DATABASE token)
+  ui/                  Shared stylesheet and Nav component
 features/
   companies/           backend, frontend, contracts, tests, feature.yaml
   contacts/            backend, frontend, contracts, fixtures, tests, feature.yaml
   deals/               backend, frontend, fixtures, tests, feature.yaml
 journeys/e2e/          Cross-feature user journey specs
-scripts/               feature-dev, feature-test, seed.js
-server.js              Composition root (wires features + contracts)
+scripts/               feature-dev, feature-test, start-web, seed.ts
 ```

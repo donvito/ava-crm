@@ -23,7 +23,9 @@ test.describe("companies", () => {
   test("user sees validation errors for an empty name", async ({ page }) => {
     await page.goto("/companies/");
     await page.getByRole("button", { name: "Add company" }).click();
-    await expect(page.getByRole("alert")).toContainText("Name is required");
+    await expect(
+      page.getByRole("region", { name: "Add company" }).getByRole("alert")
+    ).toContainText("Name is required");
   });
 
   test("user sees a validation error for a bad website", async ({ page }) => {
@@ -31,7 +33,9 @@ test.describe("companies", () => {
     await page.getByLabel("Name").fill("Bad Website Inc");
     await page.getByLabel("Website").fill("not a url");
     await page.getByRole("button", { name: "Add company" }).click();
-    await expect(page.getByRole("alert")).toContainText("Website must be a valid URL");
+    await expect(
+      page.getByRole("region", { name: "Add company" }).getByRole("alert")
+    ).toContainText("Website must be a valid URL");
   });
 
   test("user can delete a company", async ({ page }) => {

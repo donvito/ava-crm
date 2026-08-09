@@ -29,7 +29,9 @@ test.describe("deals", () => {
   test("user sees a validation error for a missing title", async ({ page }) => {
     await page.goto("/deals/");
     await page.getByRole("button", { name: "Add deal" }).click();
-    await expect(page.getByRole("alert")).toContainText("Title is required");
+    await expect(
+      page.getByRole("region", { name: "Add deal" }).getByRole("alert")
+    ).toContainText("Title is required");
   });
 
   test("user sees a validation error for a negative value", async ({ page }) => {
@@ -37,9 +39,9 @@ test.describe("deals", () => {
     await page.getByLabel("Title").fill("Bad value deal");
     await page.getByLabel("Value (USD)").fill("-10");
     await page.getByRole("button", { name: "Add deal" }).click();
-    await expect(page.getByRole("alert")).toContainText(
-      "Value must be a non-negative number"
-    );
+    await expect(
+      page.getByRole("region", { name: "Add deal" }).getByRole("alert")
+    ).toContainText("Value must be a non-negative number");
   });
 
   test("user can move a deal through the pipeline to won", async ({ page }) => {
