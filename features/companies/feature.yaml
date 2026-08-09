@@ -1,0 +1,28 @@
+name: companies
+
+frontend:
+  framework: nextjs
+  routes:
+    - /companies
+
+backend:
+  framework: nestjs
+  modules:
+    - companies
+  routes:
+    - /api/companies
+
+requires:
+  - database
+
+test_adapters:
+  database: sqlite
+
+fixtures:
+  - empty_database
+
+e2e:
+  smoke:
+    - tests/e2e/companies.spec.ts
+  regression:
+    - tests/e2e/companies.spec.ts

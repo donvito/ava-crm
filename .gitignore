@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.next/
+data/
+playwright-report/
+test-results/
+blob-report/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+.DS_Store
+.env
+.env.local
+*.log
+apps/api/dist/
+apps/web/.next/

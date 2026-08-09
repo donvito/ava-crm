@@ -1,0 +1,31 @@
+name: deals
+
+frontend:
+  framework: nextjs
+  routes:
+    - /deals
+
+backend:
+  framework: nestjs
+  modules:
+    - deals
+  routes:
+    - /api/deals
+
+requires:
+  - database
+  - companies
+  - contacts
+
+test_adapters:
+  database: sqlite
+
+fixtures:
+  - empty_database
+  - company_fixture
+
+e2e:
+  smoke:
+    - tests/e2e/deals.spec.ts
+  regression:
+    - tests/e2e/deals.spec.ts

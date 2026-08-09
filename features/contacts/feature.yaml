@@ -1,0 +1,30 @@
+name: contacts
+
+frontend:
+  framework: nextjs
+  routes:
+    - /contacts
+
+backend:
+  framework: nestjs
+  modules:
+    - contacts
+  routes:
+    - /api/contacts
+
+requires:
+  - database
+  - companies
+
+test_adapters:
+  database: sqlite
+
+fixtures:
+  - empty_database
+  - company_fixture
+
+e2e:
+  smoke:
+    - tests/e2e/contacts.spec.ts
+  regression:
+    - tests/e2e/contacts.spec.ts

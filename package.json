@@ -1,0 +1,27 @@
+{
+  "name": "ava-crm",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "tsx scripts/feature-dev.ts",
+    "dev:all": "tsx scripts/feature-dev.ts all",
+    "dev:api": "npm run start:dev -w @ava-crm/api",
+    "dev:web": "npm run dev -w @ava-crm/web",
+    "build": "npm run build -w @ava-crm/api && npm run build -w @ava-crm/web",
+    "test": "tsx scripts/feature-test.ts",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "db:migrate": "tsx app/platform/database/migrate.ts",
+    "db:seed": "tsx app/platform/database/seed.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.53.2",
+    "@types/node": "^22.15.34",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}
