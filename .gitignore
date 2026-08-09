@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.next/
+data/
+.tmp/
+test-results/
+playwright-report/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.log

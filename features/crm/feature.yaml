@@ -1,0 +1,51 @@
+name: crm
+
+description: >
+  A focused relationship workspace for managing contacts, follow-up tasks,
+  and revenue opportunities with local SQLite persistence.
+
+frontend:
+  framework: nextjs
+  routes:
+    - /
+    - /contacts
+    - /pipeline
+  entrypoint: frontend/app/layout.jsx
+  port: 3000
+
+backend:
+  framework: nestjs
+  entrypoint: backend/src/main.ts
+  port: 4000
+  modules:
+    - backend/src/crm/crm.module.ts
+    - backend/src/database/crm-store.service.ts
+  api:
+    - /api/dashboard
+    - /api/contacts
+    - /api/deals
+    - /api/tasks
+
+requires:
+  - sqlite
+
+contracts:
+  - contracts/index.ts
+
+test_adapters:
+  database: sqlite-memory-or-temporary-file
+
+fixtures:
+  - seeded_contacts
+  - seeded_deals
+  - seeded_follow_up_tasks
+
+run:
+  development: npm run dev
+  production: npm run build && npm start
+
+e2e:
+  smoke:
+    - tests/e2e/crm.spec.ts
+  regression:
+    - tests/e2e/crm.spec.ts

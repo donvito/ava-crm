@@ -1,0 +1,63 @@
+{
+  "name": "ava-crm",
+  "version": "1.0.0",
+  "description": "A feature-bounded CRM with SQLite persistence",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail --names api,web --prefix-colors green,blue \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "tsx watch --tsconfig features/crm/backend/tsconfig.json features/crm/backend/src/main.ts",
+    "dev:web": "NEXT_TELEMETRY_DISABLED=1 next dev features/crm/frontend -p 3000",
+    "start": "concurrently --kill-others-on-fail --names api,web \"npm:start:api\" \"npm:start:web\"",
+    "start:api": "node dist/crm/backend/src/main.js",
+    "start:web": "NEXT_TELEMETRY_DISABLED=1 next start features/crm/frontend -p 3000",
+    "build": "npm run build:api && npm run build:web",
+    "build:api": "tsc -p features/crm/backend/tsconfig.json",
+    "build:web": "NEXT_TELEMETRY_DISABLED=1 next build features/crm/frontend",
+    "test": "tsx --tsconfig features/crm/backend/tsconfig.json --test --test-reporter=spec features/crm/tests/integration/*.test.ts",
+    "test:watch": "tsx --tsconfig features/crm/backend/tsconfig.json --test --watch features/crm/tests/integration/*.test.ts",
+    "test:e2e": "playwright test",
+    "test:feature": "npm test && npm run build && npm run test:e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donvito/ava-crm.git"
+  },
+  "keywords": [
+    "crm",
+    "sqlite",
+    "react"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/donvito/ava-crm/issues"
+  },
+  "homepage": "https://github.com/donvito/ava-crm#readme",
+  "dependencies": {
+    "@nestjs/common": "^11.1.28",
+    "@nestjs/core": "^11.1.28",
+    "@nestjs/mapped-types": "^2.1.1",
+    "@nestjs/platform-express": "^11.1.28",
+    "better-sqlite3": "^13.0.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "lucide-react": "^1.31.0",
+    "next": "^16.3.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^11.1.28",
+    "@playwright/test": "^1.62.1",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@types/supertest": "^7.2.1",
+    "concurrently": "^10.0.4",
+    "supertest": "^7.2.2",
+    "tsx": "^4.23.11",
+    "typescript": "^7.0.2"
+  }
+}
