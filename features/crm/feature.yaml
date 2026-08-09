@@ -1,0 +1,43 @@
+name: crm
+
+description: >
+  A focused relationship workspace for managing contacts, follow-up tasks,
+  and revenue opportunities with local SQLite persistence.
+
+frontend:
+  routes:
+    - /
+    - /contacts
+    - /pipeline
+  entrypoint: frontend/main.jsx
+
+backend:
+  modules:
+    - backend/app.js
+    - backend/database.js
+  api:
+    - /api/dashboard
+    - /api/contacts
+    - /api/deals
+    - /api/tasks
+
+requires:
+  - sqlite
+
+test_adapters:
+  database: sqlite-memory-or-temporary-file
+
+fixtures:
+  - seeded_contacts
+  - seeded_deals
+  - seeded_follow_up_tasks
+
+run:
+  development: npm run dev
+  production: npm run build && npm start
+
+e2e:
+  smoke:
+    - tests/e2e/crm.spec.js
+  regression:
+    - tests/e2e/crm.spec.js

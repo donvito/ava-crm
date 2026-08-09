@@ -1,0 +1,44 @@
+{
+  "name": "ava-crm",
+  "version": "1.0.0",
+  "description": "A feature-bounded CRM with SQLite persistence",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "node features/crm/backend/server.js",
+    "start": "NODE_ENV=production node features/crm/backend/server.js",
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:feature": "npm test && npm run build && npm run test:e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donvito/ava-crm.git"
+  },
+  "keywords": [
+    "crm",
+    "sqlite",
+    "react"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/donvito/ava-crm/issues"
+  },
+  "homepage": "https://github.com/donvito/ava-crm#readme",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "express": "^5.2.1",
+    "lucide-react": "^1.31.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@vitejs/plugin-react": "^6.0.5",
+    "supertest": "^7.2.2",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
+  }
+}
