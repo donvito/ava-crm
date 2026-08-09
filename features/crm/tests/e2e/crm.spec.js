@@ -47,12 +47,20 @@ test("user can add and find a contact after reloading", async ({ page }) => {
     .click();
 
   await expect(page.getByText("Contact added")).toBeVisible();
-  await expect(page.getByText("Avery Stone")).toBeVisible();
+  await expect(
+    page.getByRole("button", {
+      name: /Avery Stone avery@harborandpine\.com/,
+    }),
+  ).toBeVisible();
 
   await page.reload();
   await page.getByRole("searchbox", { name: "Search contacts" }).fill("Harbor");
 
-  await expect(page.getByText("Avery Stone")).toBeVisible();
+  await expect(
+    page.getByRole("button", {
+      name: /Avery Stone avery@harborandpine\.com/,
+    }),
+  ).toBeVisible();
   await expect(page.getByText("avery@harborandpine.com")).toBeVisible();
   expect(browserErrors).toEqual([]);
 });
@@ -80,11 +88,11 @@ test("user can create a deal and persist a pipeline stage change", async ({
   await dialog.getByRole("button", { name: "Create deal" }).click();
 
   await expect(page.getByText("Deal created")).toBeVisible();
-  await expect(page.getByText("Expansion partnership")).toBeVisible();
 
   const stageSelect = page.getByLabel(
     "Move Expansion partnership to stage",
   );
+  await expect(stageSelect).toBeVisible();
   await stageSelect.selectOption("Proposal");
   await expect(page.getByText("Stage updated")).toBeVisible();
   await expect(stageSelect).toHaveValue("Proposal");
