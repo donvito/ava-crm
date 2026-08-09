@@ -76,7 +76,9 @@ test.describe("deals", () => {
     await page.getByRole("button", { name: "Add deal" }).click();
     await page.getByLabel("Stage for Filter won deal").selectOption("won");
     await expect(
-      page.getByRole("row", { name: /Filter won deal/ }).getByText("Won")
+      page
+        .getByRole("row", { name: /Filter won deal/ })
+        .getByText("Won", { exact: true })
     ).toBeVisible();
 
     await page.getByLabel("Filter by stage").selectOption("won");
