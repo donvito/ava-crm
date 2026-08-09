@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently --kill-others-on-fail --names api,web --prefix-colors green,blue \"npm:dev:api\" \"npm:dev:web\"",
-    "dev:api": "tsx watch features/crm/backend/src/main.ts",
+    "dev:api": "tsx --tsconfig features/crm/backend/tsconfig.json watch features/crm/backend/src/main.ts",
     "dev:web": "NEXT_TELEMETRY_DISABLED=1 next dev features/crm/frontend -p 3000",
     "start": "concurrently --kill-others-on-fail --names api,web \"npm:start:api\" \"npm:start:web\"",
     "start:api": "node dist/crm/backend/src/main.js",
@@ -13,8 +13,8 @@
     "build": "npm run build:api && npm run build:web",
     "build:api": "tsc -p features/crm/backend/tsconfig.json",
     "build:web": "NEXT_TELEMETRY_DISABLED=1 next build features/crm/frontend",
-    "test": "tsx --test --test-reporter=spec features/crm/tests/integration/*.test.ts",
-    "test:watch": "tsx --test --watch features/crm/tests/integration/*.test.ts",
+    "test": "tsx --tsconfig features/crm/backend/tsconfig.json --test --test-reporter=spec features/crm/tests/integration/*.test.ts",
+    "test:watch": "tsx --tsconfig features/crm/backend/tsconfig.json --test --watch features/crm/tests/integration/*.test.ts",
     "test:e2e": "playwright test",
     "test:feature": "npm test && npm run build && npm run test:e2e"
   },
