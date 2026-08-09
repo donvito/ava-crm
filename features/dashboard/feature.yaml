@@ -1,0 +1,33 @@
+name: dashboard
+
+frontend:
+  routes:
+    - /
+
+backend:
+  modules:
+    - dashboard
+  routes:
+    - /api/dashboard
+
+requires:
+  - database
+  - companies
+  - contacts
+  - deals
+
+notes: >
+  Dashboard is a composition view. It reads summary data across CRM tables
+  for a single home screen and owns the application shell/navigation.
+
+test_adapters:
+  database: sqlite
+
+fixtures:
+  - seeded_crm
+
+e2e:
+  smoke:
+    - tests/e2e/dashboard.spec.ts
+  regression:
+    - tests/e2e/dashboard.spec.ts

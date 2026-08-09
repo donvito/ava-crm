@@ -1,0 +1,34 @@
+{
+  "name": "ava-crm",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx scripts/feature-dev.ts",
+    "dev:all": "tsx scripts/feature-dev.ts all",
+    "build": "vite build",
+    "test": "tsx scripts/feature-test.ts",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "db:migrate": "tsx app/platform/database/migrate.ts",
+    "db:seed": "tsx app/platform/database/seed.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.4",
+    "hono": "^4.8.5",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.53.2",
+    "@types/node": "^22.15.34",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.2",
+    "vitest": "^3.2.4"
+  }
+}

@@ -1,0 +1,26 @@
+name: companies
+
+frontend:
+  routes:
+    - /companies
+
+backend:
+  modules:
+    - companies
+  routes:
+    - /api/companies
+
+requires:
+  - database
+
+test_adapters:
+  database: sqlite
+
+fixtures:
+  - empty_database
+
+e2e:
+  smoke:
+    - tests/e2e/companies.spec.ts
+  regression:
+    - tests/e2e/companies.spec.ts
