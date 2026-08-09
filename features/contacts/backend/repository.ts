@@ -1,5 +1,5 @@
-import type { Db } from "../../../app/platform/database/db.ts";
-import type { Contact, ContactInput } from "../contracts/types.ts";
+import type { Db } from "../../../app/platform/database/db";
+import type { Contact, ContactInput } from "../contracts/types";
 
 type ContactRow = {
   id: number;
@@ -41,7 +41,9 @@ const contactSelect = `
 
 export function listContacts(db: Db): Contact[] {
   const rows = db
-    .prepare(`${contactSelect} ORDER BY ct.last_name COLLATE NOCASE, ct.first_name COLLATE NOCASE`)
+    .prepare(
+      `${contactSelect} ORDER BY ct.last_name COLLATE NOCASE, ct.first_name COLLATE NOCASE`,
+    )
     .all() as ContactRow[];
   return rows.map(mapContact);
 }

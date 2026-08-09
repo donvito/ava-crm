@@ -1,11 +1,11 @@
-import type { Db } from "../../../app/platform/database/db.ts";
+import type { Db } from "../../../app/platform/database/db";
 import type {
   Deal,
   DealInput,
   DealStage,
   PipelineSummary,
-} from "../contracts/types.ts";
-import { DEAL_STAGES } from "../contracts/types.ts";
+} from "../contracts/types";
+import { DEAL_STAGES } from "../contracts/types";
 
 type DealRow = {
   id: number;
@@ -134,7 +134,11 @@ export function getPipelineSummary(db: Db): PipelineSummary[] {
       GROUP BY stage
     `,
     )
-    .all() as Array<{ stage: DealStage; count: number | bigint; total_cents: number | bigint }>;
+    .all() as Array<{
+    stage: DealStage;
+    count: number | bigint;
+    total_cents: number | bigint;
+  }>;
 
   const byStage = new Map(rows.map((row) => [row.stage, row]));
   return DEAL_STAGES.map((stage) => {

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, type FormEvent } from "react";
 import type { Contact, ContactInput } from "../contracts/types";
 import type { Company } from "../../companies/contracts/types";

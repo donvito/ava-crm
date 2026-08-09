@@ -1,9 +1,9 @@
-import type { Db } from "../../../app/platform/database/db.ts";
-import type { Company } from "../../companies/contracts/types.ts";
-import type { Contact } from "../../contacts/contracts/types.ts";
-import type { Deal, DealStage, PipelineSummary } from "../../deals/contracts/types.ts";
-import { DEAL_STAGES } from "../../deals/contracts/types.ts";
-import type { DashboardSummary } from "../contracts/types.ts";
+import type { Db } from "../../../app/platform/database/db";
+import type { Company } from "../../companies/contracts/types";
+import type { Contact } from "../../contacts/contracts/types";
+import type { Deal, DealStage, PipelineSummary } from "../../deals/contracts/types";
+import { DEAL_STAGES } from "../../deals/contracts/types";
+import type { DashboardSummary } from "../contracts/types";
 
 function count(db: Db, sql: string): number {
   return Number((db.prepare(sql).get() as { count: number | bigint }).count);

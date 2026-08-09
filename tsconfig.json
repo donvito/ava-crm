@@ -11,6 +11,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
@@ -18,5 +20,13 @@
       "@features/*": ["features/*"]
     }
   },
-  "include": ["app/**/*", "features/**/*", "scripts/**/*", "journeys/**/*", "vite.config.ts", "playwright.config.ts"]
+  "include": [
+    "app/**/*",
+    "features/**/*",
+    "scripts/**/*",
+    "journeys/**/*",
+    "apps/**/*",
+    "playwright.config.ts",
+    "vitest.config.ts"
+  ]
 }

@@ -1,19 +1,54 @@
 import { DatabaseSync } from "node:sqlite";
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export type Db = DatabaseSync;
 
 let dbInstance: DatabaseSync | null = null;
 
+export function getWorkspaceRoot(): string {
+  if (process.env.CRM_WORKSPACE_ROOT) {
+    return process.env.CRM_WORKSPACE_ROOT;
+  }
+
+  let dir = process.cwd();
+  for (let i = 0; i < 6; i++) {
+    const schemaCandidate = path.join(
+      dir,
+      "app",
+      "platform",
+      "database",
+      "schema.sql",
+    );
+    if (fs.existsSync(schemaCandidate)) {
+      return dir;
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+
+  return process.cwd();
+}
+
 export function getDatabasePath(): string {
   if (process.env.CRM_DB_PATH) {
     return process.env.CRM_DB_PATH;
   }
-  return path.resolve(process.cwd(), "data", "crm.sqlite");
+  return path.resolve(getWorkspaceRoot(), "data", "crm.sqlite");
+}
+
+export function getSchemaPath(): string {
+  if (process.env.CRM_SCHEMA_PATH) {
+    return process.env.CRM_SCHEMA_PATH;
+  }
+  return path.resolve(
+    getWorkspaceRoot(),
+    "app",
+    "platform",
+    "database",
+    "schema.sql",
+  );
 }
 
 export function openDatabase(dbPath = getDatabasePath()): DatabaseSync {
@@ -27,7 +62,10 @@ export function openDatabase(dbPath = getDatabasePath()): DatabaseSync {
 }
 
 export function migrate(db: DatabaseSync): void {
-  const schemaPath = path.join(__dirname, "schema.sql");
+  const schemaPath = getSchemaPath();
+  if (!fs.existsSync(schemaPath)) {
+    throw new Error(`Could not find schema.sql at ${schemaPath}`);
+  }
   const schema = fs.readFileSync(schemaPath, "utf8");
   db.exec(schema);
 }

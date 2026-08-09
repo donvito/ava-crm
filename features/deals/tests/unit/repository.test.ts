@@ -6,12 +6,12 @@ import {
   closeDb,
   getDb,
   resetDb,
-} from "../../../../app/platform/database/db.ts";
+} from "../../../../app/platform/database/db";
 import {
   createDeal,
   getPipelineSummary,
   updateDeal,
-} from "../../backend/repository.ts";
+} from "../../backend/repository";
 
 describe("deals repository", () => {
   let dbPath: string;

@@ -6,11 +6,11 @@ import {
   closeDb,
   getDb,
   resetDb,
-} from "../../../../app/platform/database/db.ts";
+} from "../../../../app/platform/database/db";
 import {
   createContact,
   listContacts,
-} from "../../backend/repository.ts";
+} from "../../backend/repository";
 
 describe("contacts repository", () => {
   let dbPath: string;

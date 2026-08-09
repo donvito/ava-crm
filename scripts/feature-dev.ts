@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 import { spawn, type ChildProcess } from "node:child_process";
 import path from "node:path";
-import { resetDb, getDb, closeDb } from "../app/platform/database/db.ts";
+import { resetDb, getDb, closeDb } from "../app/platform/database/db";
 
 const feature = process.argv[2] ?? "all";
 const useTestDb = process.argv.includes("--test-db");
@@ -20,9 +20,12 @@ process.on("SIGINT", () => shutdown(0));
 process.on("SIGTERM", () => shutdown(0));
 
 if (useTestDb) {
-  process.env.CRM_DB_PATH = path.resolve(process.cwd(), "data", "crm-test.sqlite");
+  process.env.CRM_DB_PATH = path.resolve(
+    process.cwd(),
+    "data",
+    "crm-test.sqlite",
+  );
   resetDb(process.env.CRM_DB_PATH);
-  // Seed a clean, deterministic fixture for E2E.
   const db = getDb();
   db.prepare(
     `INSERT INTO companies (name, industry, website, notes) VALUES (?, ?, ?, ?)`,
@@ -55,23 +58,36 @@ if (useTestDb) {
   getDb();
 }
 
-const api = spawn("tsx", ["app/server.ts"], {
+const workspaceRoot = process.cwd();
+
+const api = spawn("npm", ["run", "start:dev", "-w", "@ava-crm/api"], {
   stdio: "inherit",
-  env: { ...process.env, PORT: process.env.PORT ?? "3001" },
+  env: {
+    ...process.env,
+    PORT: process.env.PORT ?? "3001",
+    CRM_WORKSPACE_ROOT: workspaceRoot,
+    CRM_DB_PATH: process.env.CRM_DB_PATH,
+  },
+  cwd: workspaceRoot,
 });
 children.push(api);
 
-const vite = spawn("npx", ["vite", "--host", "127.0.0.1", "--port", "5173"], {
+const web = spawn("npm", ["run", "dev", "-w", "@ava-crm/web"], {
   stdio: "inherit",
-  env: process.env,
+  env: {
+    ...process.env,
+    CRM_API_ORIGIN: process.env.CRM_API_ORIGIN ?? "http://localhost:3001",
+    CRM_WORKSPACE_ROOT: workspaceRoot,
+  },
+  cwd: workspaceRoot,
 });
-children.push(vite);
+children.push(web);
 
-console.log(`Starting Ava CRM feature sandbox: ${feature}`);
+console.log(`Starting Ava CRM (Next.js + NestJS) feature sandbox: ${feature}`);
 
 api.on("exit", (code) => {
   if (code && code !== 0) shutdown(code);
 });
-vite.on("exit", (code) => {
+web.on("exit", (code) => {
   if (code && code !== 0) shutdown(code);
 });

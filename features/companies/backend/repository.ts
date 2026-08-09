@@ -1,5 +1,5 @@
-import type { Db } from "../../../app/platform/database/db.ts";
-import type { Company, CompanyInput } from "../contracts/types.ts";
+import type { Db } from "../../../app/platform/database/db";
+import type { Company, CompanyInput } from "../contracts/types";
 
 type CompanyRow = {
   id: number;

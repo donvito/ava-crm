@@ -1,4 +1,4 @@
-import { getDb, closeDb } from "./db.ts";
+import { getDb, closeDb } from "./db";
 
 const db = getDb();
 

@@ -1,10 +1,12 @@
 name: companies
 
 frontend:
+  framework: nextjs
   routes:
     - /companies
 
 backend:
+  framework: nestjs
   modules:
     - companies
   routes:

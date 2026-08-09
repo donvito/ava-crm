@@ -1,10 +1,12 @@
 name: dashboard
 
 frontend:
+  framework: nextjs
   routes:
     - /
 
 backend:
+  framework: nestjs
   modules:
     - dashboard
   routes:

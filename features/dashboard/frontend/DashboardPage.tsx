@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import type { DashboardSummary } from "../contracts/types";
 import { api, formatMoney, stageLabel } from "../../../app/platform/http/api";
 
@@ -29,7 +31,7 @@ export function DashboardPage() {
           <h1>Dashboard</h1>
           <p>A live snapshot of companies, people, and open pipeline.</p>
         </div>
-        <Link className="btn" to="/deals">
+        <Link className="btn" href="/deals">
           Open pipeline
         </Link>
       </header>

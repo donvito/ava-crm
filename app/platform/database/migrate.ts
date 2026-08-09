@@ -1,5 +1,5 @@
-import { getDb, getDatabasePath, closeDb } from "./db.ts";
+import { getDb, getDatabasePath, closeDb } from "./db";
 
-const db = getDb();
+getDb();
 console.log(`Migrated SQLite database at ${getDatabasePath()}`);
 closeDb();

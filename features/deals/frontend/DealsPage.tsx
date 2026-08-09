@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import type { Deal, DealInput, DealStage } from "../contracts/types";
 import { DEAL_STAGES } from "../contracts/types";
