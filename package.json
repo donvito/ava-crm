@@ -1,0 +1,23 @@
+{
+  "name": "ava-crm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CRM app with a SQLite database, organized with Agent-Verifiable Architecture (AVA)",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "seed": "node scripts/seed.js",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test:feature": "bash scripts/feature-test",
+    "test:e2e:all": "bash scripts/feature-test companies && bash scripts/feature-test contacts && bash scripts/feature-test deals && playwright test journeys/e2e"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.2.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.0",
+    "vitest": "^3.2.0"
+  }
+}

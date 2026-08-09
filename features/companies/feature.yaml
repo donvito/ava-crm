@@ -1,0 +1,31 @@
+name: companies
+
+frontend:
+  routes:
+    - /companies
+
+backend:
+  api:
+    - GET /api/companies
+    - POST /api/companies
+    - GET /api/companies/:id
+    - PUT /api/companies/:id
+    - DELETE /api/companies/:id
+  tables:
+    - companies
+
+provides:
+  - contracts/company-directory.js (CompanyDirectory)
+
+requires: []
+
+sandbox:
+  run: FEATURES=companies npm run dev
+
+test_adapters: {}
+
+e2e:
+  smoke:
+    - tests/e2e/companies.spec.js
+  regression:
+    - tests/e2e/companies.spec.js

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Start one feature's sandbox: scripts/feature-dev <companies|contacts|deals>
+# Missing cross-feature dependencies are replaced by fake adapters.
+set -euo pipefail
+
+feature="${1:?usage: scripts/feature-dev <feature-name>}"
+if [ ! -d "features/$feature" ]; then
+  echo "Unknown feature: $feature" >&2
+  exit 1
+fi
+
+FEATURES="$feature" DB_PATH=".tmp/dev-$feature.db" exec node server.js

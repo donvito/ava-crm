@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contacts · AVA CRM</title>
+    <link rel="stylesheet" href="/ui/styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Contacts</h1>
+
+      <section class="card" aria-labelledby="contact-form-heading">
+        <h2 id="contact-form-heading">Add contact</h2>
+        <form class="entity-form" id="contact-form">
+          <div class="field">
+            <label for="contact-first-name">First name</label>
+            <input id="contact-first-name" name="first_name" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="contact-last-name">Last name</label>
+            <input id="contact-last-name" name="last_name" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="contact-email">Email</label>
+            <input id="contact-email" name="email" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="contact-phone">Phone</label>
+            <input id="contact-phone" name="phone" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="contact-company">Company</label>
+            <select id="contact-company" name="company_id">
+              <option value="">No company</option>
+            </select>
+          </div>
+          <button type="submit" id="contact-submit">Add contact</button>
+          <button type="button" class="secondary" id="contact-cancel" hidden>
+            Cancel
+          </button>
+        </form>
+        <p class="form-error" id="contact-form-error" role="alert"></p>
+      </section>
+
+      <section class="card" aria-labelledby="contact-list-heading">
+        <h2 id="contact-list-heading">All contacts</h2>
+        <table aria-label="Contacts">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Company</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="contact-rows"></tbody>
+        </table>
+        <p class="empty-state" id="contact-empty" hidden>No contacts yet.</p>
+      </section>
+    </main>
+    <script type="module" src="/contacts/contacts.js"></script>
+  </body>
+</html>
