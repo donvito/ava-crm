@@ -1,0 +1,34 @@
+name: contacts
+
+frontend:
+  routes:
+    - /contacts
+
+backend:
+  api:
+    - GET /api/contacts
+    - POST /api/contacts
+    - GET /api/contacts/:id
+    - PUT /api/contacts/:id
+    - DELETE /api/contacts/:id
+    - GET /api/contacts/company-options
+  tables:
+    - contacts
+
+provides:
+  - contracts/contact-directory.ts (ContactDirectory, CONTACT_DIRECTORY token)
+
+requires:
+  - companies (via CompanyDirectory contract)
+
+sandbox:
+  run: scripts/feature-dev contacts
+
+test_adapters:
+  company_directory: fixtures/fake-company-directory.ts
+
+e2e:
+  smoke:
+    - tests/e2e/contacts.spec.js
+  regression:
+    - tests/e2e/contacts.spec.js

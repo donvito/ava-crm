@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Run one feature's E2E suite in its sandbox: scripts/feature-test <feature>
+set -euo pipefail
+
+feature="${1:?usage: scripts/feature-test <feature-name>}"
+if [ ! -d "features/$feature" ]; then
+  echo "Unknown feature: $feature" >&2
+  exit 1
+fi
+
+FEATURES="$feature" exec npx playwright test "features/$feature/tests/e2e"

@@ -1,0 +1,37 @@
+name: deals
+
+frontend:
+  routes:
+    - /deals
+
+backend:
+  api:
+    - GET /api/deals
+    - POST /api/deals
+    - GET /api/deals/:id
+    - PATCH /api/deals/:id/stage
+    - DELETE /api/deals/:id
+    - GET /api/deals/stages
+    - GET /api/deals/contact-options
+    - GET /api/deals/company-options
+  tables:
+    - deals
+
+provides: []
+
+requires:
+  - contacts (via ContactDirectory contract)
+  - companies (via CompanyDirectory contract)
+
+sandbox:
+  run: scripts/feature-dev deals
+
+test_adapters:
+  contact_directory: fixtures/fake-directories.ts
+  company_directory: fixtures/fake-directories.ts
+
+e2e:
+  smoke:
+    - tests/e2e/deals.spec.js
+  regression:
+    - tests/e2e/deals.spec.js
