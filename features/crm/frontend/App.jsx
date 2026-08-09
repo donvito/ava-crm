@@ -61,12 +61,19 @@ const money = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
-const compactMoney = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  notation: "compact",
-  maximumFractionDigits: 1,
-});
+const compactMoney = {
+  format(value) {
+    const absolute = Math.abs(value);
+    const sign = value < 0 ? "-" : "";
+    if (absolute >= 1_000_000) {
+      return `${sign}$${Number((absolute / 1_000_000).toFixed(1))}M`;
+    }
+    if (absolute >= 1_000) {
+      return `${sign}$${Number((absolute / 1_000).toFixed(1))}K`;
+    }
+    return `${sign}$${Math.round(absolute)}`;
+  },
+};
 
 function initials(name = "") {
   return name
