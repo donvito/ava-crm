@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently --kill-others-on-fail --names api,web --prefix-colors green,blue \"npm:dev:api\" \"npm:dev:web\"",
-    "dev:api": "tsx --tsconfig features/crm/backend/tsconfig.json watch features/crm/backend/src/main.ts",
+    "dev:api": "tsx watch --tsconfig features/crm/backend/tsconfig.json features/crm/backend/src/main.ts",
     "dev:web": "NEXT_TELEMETRY_DISABLED=1 next dev features/crm/frontend -p 3000",
     "start": "concurrently --kill-others-on-fail --names api,web \"npm:start:api\" \"npm:start:web\"",
     "start:api": "node dist/crm/backend/src/main.js",
