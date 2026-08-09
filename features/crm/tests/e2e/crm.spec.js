@@ -30,16 +30,17 @@ test("user can add and find a contact after reloading", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Contacts" })).toBeVisible();
   await page.getByRole("button", { name: "Add contact" }).click();
 
-  await page.getByLabel("First name", { exact: false }).fill("Avery");
-  await page.getByLabel("Last name", { exact: false }).fill("Stone");
-  await page
+  const dialog = page.getByRole("dialog");
+  await dialog.getByLabel("First name", { exact: false }).fill("Avery");
+  await dialog.getByLabel("Last name", { exact: false }).fill("Stone");
+  await dialog
     .getByLabel("Work email", { exact: false })
     .fill("avery@harborandpine.com");
-  await page.getByLabel("Company", { exact: false }).fill("Harbor & Pine");
-  await page.getByLabel("Role").fill("Partnerships lead");
-  await page.getByLabel("City").fill("Boston");
-  await page.getByLabel("Relationship").selectOption("Prospect");
-  await page
+  await dialog.getByLabel("Company", { exact: false }).fill("Harbor & Pine");
+  await dialog.getByLabel("Role").fill("Partnerships lead");
+  await dialog.getByLabel("City").fill("Boston");
+  await dialog.getByLabel("Relationship", { exact: true }).selectOption("Prospect");
+  await dialog
     .getByRole("button", { name: "Add contact", exact: true })
     .click();
 
@@ -63,11 +64,16 @@ test("user can create a deal and persist a pipeline stage change", async ({
   await expect(page.getByRole("heading", { name: "Deal pipeline" })).toBeVisible();
   await page.getByRole("button", { name: "New deal" }).click();
 
-  await page.getByLabel("Deal name", { exact: false }).fill("Expansion partnership");
-  await page.getByLabel("Primary contact").selectOption({ label: /Olivia Martin/ });
-  await page.getByLabel("Deal value", { exact: false }).fill("64000");
-  await page.getByLabel("Stage").selectOption("Qualified");
-  await page.getByRole("button", { name: "Create deal" }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog
+    .getByLabel("Deal name", { exact: false })
+    .fill("Expansion partnership");
+  await dialog.getByLabel("Primary contact").selectOption({
+    label: "Olivia Martin · Northstar Studio",
+  });
+  await dialog.getByLabel("Deal value", { exact: false }).fill("64000");
+  await dialog.getByLabel("Stage", { exact: true }).selectOption("Qualified");
+  await dialog.getByRole("button", { name: "Create deal" }).click();
 
   await expect(page.getByText("Deal created")).toBeVisible();
   await expect(page.getByText("Expansion partnership")).toBeVisible();
