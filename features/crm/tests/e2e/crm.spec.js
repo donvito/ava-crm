@@ -39,7 +39,9 @@ test("user can add and find a contact after reloading", async ({ page }) => {
   await dialog.getByLabel("Company", { exact: false }).fill("Harbor & Pine");
   await dialog.getByLabel("Role").fill("Partnerships lead");
   await dialog.getByLabel("City").fill("Boston");
-  await dialog.getByLabel("Relationship", { exact: true }).selectOption("Prospect");
+  await dialog
+    .getByRole("combobox", { name: "Relationship", exact: true })
+    .selectOption("Prospect");
   await dialog
     .getByRole("button", { name: "Add contact", exact: true })
     .click();
@@ -72,7 +74,9 @@ test("user can create a deal and persist a pipeline stage change", async ({
     label: "Olivia Martin · Northstar Studio",
   });
   await dialog.getByLabel("Deal value", { exact: false }).fill("64000");
-  await dialog.getByLabel("Stage", { exact: true }).selectOption("Qualified");
+  await dialog
+    .getByRole("combobox", { name: "Stage", exact: true })
+    .selectOption("Qualified");
   await dialog.getByRole("button", { name: "Create deal" }).click();
 
   await expect(page.getByText("Deal created")).toBeVisible();
