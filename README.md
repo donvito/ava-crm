@@ -1,7 +1,7 @@
 # Folio CRM
 
 A focused CRM for contacts, follow-up work, and sales opportunities. The app
-uses a React interface, an Express feature API, and a real SQLite database that
+uses a Next.js frontend, a NestJS feature API, and a real SQLite database that
 persists locally.
 
 ## Run it
@@ -11,7 +11,8 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:4173](http://localhost:4173).
+Open [http://localhost:3000](http://localhost:3000). Next.js serves the browser
+application and proxies `/api/*` to the NestJS service on port `4000`.
 
 The default database is created at `data/crm.sqlite` and populated with a small
 demo workspace on first run. To use a different file:
@@ -41,12 +42,13 @@ The CRM is an independently runnable AVA feature:
 
 ```text
 features/crm/
-  backend/       SQLite store and HTTP API
-  frontend/      React user interface
+  backend/       NestJS module, controllers, services, and SQLite store
+  contracts/     Explicit frontend/backend data contracts
+  frontend/      Next.js App Router user interface
   tests/         Integration and Playwright behavior tests
   feature.yaml   Ownership, dependencies, and verification manifest
 ```
 
-The browser talks to the real feature API in acceptance tests. SQLite is the
-only runtime dependency; tests replace the production database path with an
-isolated in-memory or temporary SQLite database.
+The browser talks through Next.js to the real NestJS API in acceptance tests.
+Tests replace the production database path with an isolated in-memory or
+temporary SQLite database.

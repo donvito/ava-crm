@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-function captureBrowserErrors(page) {
-  const errors = [];
+function captureBrowserErrors(page: import("@playwright/test").Page): string[] {
+  const errors: string[] = [];
   page.on("console", (message) => {
     if (message.type() === "error") errors.push(message.text());
   });
@@ -17,8 +17,12 @@ test("dashboard presents live CRM activity from SQLite", async ({ page }) => {
     page.getByRole("heading", { name: "Good evening, Morgan" }),
   ).toBeVisible();
   await expect(page.getByText("Active contacts")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Pipeline overview" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Recent contacts" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Pipeline overview" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Recent contacts" }),
+  ).toBeVisible();
   await expect(page.getByText("Northstar Studio").first()).toBeVisible();
   expect(browserErrors).toEqual([]);
 });
@@ -71,7 +75,9 @@ test("user can create a deal and persist a pipeline stage change", async ({
   const browserErrors = captureBrowserErrors(page);
   await page.goto("/pipeline");
 
-  await expect(page.getByRole("heading", { name: "Deal pipeline" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Deal pipeline" }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "New deal" }).click();
 
   const dialog = page.getByRole("dialog");
@@ -88,7 +94,6 @@ test("user can create a deal and persist a pipeline stage change", async ({
   await dialog.getByRole("button", { name: "Create deal" }).click();
 
   await expect(page.getByText("Deal created")).toBeVisible();
-
   const stageSelect = page.getByLabel(
     "Move Expansion partnership to stage",
   );

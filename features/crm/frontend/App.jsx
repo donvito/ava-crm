@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowRight,
   ArrowUpRight,
@@ -26,17 +28,12 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { crmApi } from "./api.js";
 
 const CONTACT_STATUSES = ["All", "Lead", "Prospect", "Customer", "Partner"];
 const PIPELINE_STAGES = ["Qualified", "Proposal", "Negotiation", "Won"];
-
-const routeToView = {
-  "/": "overview",
-  "/contacts": "contacts",
-  "/pipeline": "pipeline",
-};
 
 const viewToRoute = {
   overview: "/",
@@ -131,10 +128,9 @@ function formatCloseDate(value) {
   });
 }
 
-function App() {
-  const [view, setView] = useState(
-    () => routeToView[window.location.pathname] ?? "overview",
-  );
+function App({ initialView = "overview" }) {
+  const router = useRouter();
+  const [view, setView] = useState(initialView);
   const [dashboard, setDashboard] = useState(null);
   const [contacts, setContacts] = useState([]);
   const [deals, setDeals] = useState([]);
@@ -170,12 +166,8 @@ function App() {
   }, [loadAll]);
 
   useEffect(() => {
-    const onPopState = () => {
-      setView(routeToView[window.location.pathname] ?? "overview");
-    };
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, []);
+    setView(initialView);
+  }, [initialView]);
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -188,7 +180,7 @@ function App() {
     setMobileNavOpen(false);
     const nextRoute = viewToRoute[nextView];
     if (window.location.pathname !== nextRoute) {
-      window.history.pushState({}, "", nextRoute);
+      router.push(nextRoute);
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }

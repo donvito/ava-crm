@@ -5,16 +5,21 @@ description: >
   and revenue opportunities with local SQLite persistence.
 
 frontend:
+  framework: nextjs
   routes:
     - /
     - /contacts
     - /pipeline
-  entrypoint: frontend/main.jsx
+  entrypoint: frontend/app/layout.jsx
+  port: 3000
 
 backend:
+  framework: nestjs
+  entrypoint: backend/src/main.ts
+  port: 4000
   modules:
-    - backend/app.js
-    - backend/database.js
+    - backend/src/crm/crm.module.ts
+    - backend/src/database/crm-store.service.ts
   api:
     - /api/dashboard
     - /api/contacts
@@ -23,6 +28,9 @@ backend:
 
 requires:
   - sqlite
+
+contracts:
+  - contracts/index.ts
 
 test_adapters:
   database: sqlite-memory-or-temporary-file
@@ -38,6 +46,6 @@ run:
 
 e2e:
   smoke:
-    - tests/e2e/crm.spec.js
+    - tests/e2e/crm.spec.ts
   regression:
-    - tests/e2e/crm.spec.js
+    - tests/e2e/crm.spec.ts

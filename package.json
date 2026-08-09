@@ -2,14 +2,19 @@
   "name": "ava-crm",
   "version": "1.0.0",
   "description": "A feature-bounded CRM with SQLite persistence",
-  "type": "module",
   "private": true,
   "scripts": {
-    "dev": "node features/crm/backend/server.js",
-    "start": "NODE_ENV=production node features/crm/backend/server.js",
-    "build": "vite build",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "dev": "concurrently --kill-others-on-fail --names api,web --prefix-colors green,blue \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "TS_NODE_PROJECT=features/crm/backend/tsconfig.json node --watch -r ts-node/register features/crm/backend/src/main.ts",
+    "dev:web": "NEXT_TELEMETRY_DISABLED=1 next dev features/crm/frontend -p 3000",
+    "start": "concurrently --kill-others-on-fail --names api,web \"npm:start:api\" \"npm:start:web\"",
+    "start:api": "node dist/crm/backend/src/main.js",
+    "start:web": "NEXT_TELEMETRY_DISABLED=1 next start features/crm/frontend -p 3000",
+    "build": "npm run build:api && npm run build:web",
+    "build:api": "tsc -p features/crm/backend/tsconfig.json",
+    "build:web": "NEXT_TELEMETRY_DISABLED=1 next build features/crm/frontend",
+    "test": "TS_NODE_PROJECT=features/crm/backend/tsconfig.json node --test --test-reporter=spec -r ts-node/register features/crm/tests/integration/*.test.ts",
+    "test:watch": "TS_NODE_PROJECT=features/crm/backend/tsconfig.json node --test --watch -r ts-node/register features/crm/tests/integration/*.test.ts",
     "test:e2e": "playwright test",
     "test:feature": "npm test && npm run build && npm run test:e2e"
   },
@@ -28,17 +33,31 @@
   },
   "homepage": "https://github.com/donvito/ava-crm#readme",
   "dependencies": {
+    "@nestjs/common": "^11.1.28",
+    "@nestjs/core": "^11.1.28",
+    "@nestjs/mapped-types": "^2.1.1",
+    "@nestjs/platform-express": "^11.1.28",
     "better-sqlite3": "^13.0.3",
-    "express": "^5.2.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
     "lucide-react": "^1.31.0",
+    "next": "^16.3.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
+    "@nestjs/testing": "^11.1.28",
     "@playwright/test": "^1.62.1",
-    "@vitejs/plugin-react": "^6.0.5",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@types/supertest": "^7.2.1",
+    "concurrently": "^10.0.4",
     "supertest": "^7.2.2",
-    "vite": "^8.2.1",
-    "vitest": "^4.1.10"
+    "ts-node": "^10.9.2",
+    "typescript": "^7.0.2"
   }
 }
