@@ -3,7 +3,9 @@ import { expect, test } from "@playwright/test";
 test("user can create a deal and move it across stages", async ({ page }) => {
   await page.goto("/deals");
 
-  await expect(page.getByRole("heading", { name: "Deals" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Deals", exact: true }),
+  ).toBeVisible();
 
   const title = `Expansion deal ${Date.now()}`;
   await page.getByLabel("Deal title").fill(title);

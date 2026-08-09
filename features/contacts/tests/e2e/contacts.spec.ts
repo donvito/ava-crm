@@ -3,7 +3,9 @@ import { expect, test } from "@playwright/test";
 test("user can create a contact linked to a company", async ({ page }) => {
   await page.goto("/contacts");
 
-  await expect(page.getByRole("heading", { name: "Contacts" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Contacts", exact: true }),
+  ).toBeVisible();
 
   const firstName = "Nora";
   const lastName = `Quill${Date.now()}`;

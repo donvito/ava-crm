@@ -3,7 +3,9 @@ import { expect, test } from "@playwright/test";
 test("user can create a company and see it persist", async ({ page }) => {
   await page.goto("/companies");
 
-  await expect(page.getByRole("heading", { name: "Companies" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Companies", exact: true }),
+  ).toBeVisible();
 
   const uniqueName = `Atlas Marine ${Date.now()}`;
   await page.getByLabel("Company name").fill(uniqueName);
