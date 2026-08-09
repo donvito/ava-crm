@@ -12,6 +12,7 @@ import {
   Query,
 } from "@nestjs/common";
 import { CONTACT_STATUSES, DEAL_STAGES } from "../../../contracts";
+import { createCrmValidationPipe } from "../application";
 import {
   CompleteTaskDto,
   ContactQueryDto,
@@ -46,7 +47,9 @@ export class CrmController {
   }
 
   @Get("contacts")
-  contacts(@Query() query: ContactQueryDto) {
+  contacts(
+    @Query(createCrmValidationPipe(ContactQueryDto)) query: ContactQueryDto,
+  ) {
     return { contacts: this.crm.contacts(query) };
   }
 
@@ -56,14 +59,16 @@ export class CrmController {
   }
 
   @Post("contacts")
-  createContact(@Body() input: CreateContactDto) {
+  createContact(
+    @Body(createCrmValidationPipe(CreateContactDto)) input: CreateContactDto,
+  ) {
     return { contact: this.crm.createContact(input) };
   }
 
   @Patch("contacts/:id")
   updateContact(
     @Param("id", ParseIntPipe) id: number,
-    @Body() input: UpdateContactDto,
+    @Body(createCrmValidationPipe(UpdateContactDto)) input: UpdateContactDto,
   ) {
     return { contact: this.crm.updateContact(id, input) };
   }
@@ -75,7 +80,7 @@ export class CrmController {
   }
 
   @Get("deals")
-  deals(@Query() query: DealQueryDto) {
+  deals(@Query(createCrmValidationPipe(DealQueryDto)) query: DealQueryDto) {
     return { deals: this.crm.deals(query) };
   }
 
@@ -85,14 +90,16 @@ export class CrmController {
   }
 
   @Post("deals")
-  createDeal(@Body() input: CreateDealDto) {
+  createDeal(
+    @Body(createCrmValidationPipe(CreateDealDto)) input: CreateDealDto,
+  ) {
     return { deal: this.crm.createDeal(input) };
   }
 
   @Patch("deals/:id")
   updateDeal(
     @Param("id", ParseIntPipe) id: number,
-    @Body() input: UpdateDealDto,
+    @Body(createCrmValidationPipe(UpdateDealDto)) input: UpdateDealDto,
   ) {
     return { deal: this.crm.updateDeal(id, input) };
   }
@@ -106,7 +113,7 @@ export class CrmController {
   @Patch("tasks/:id")
   completeTask(
     @Param("id", ParseIntPipe) id: number,
-    @Body() input: CompleteTaskDto,
+    @Body(createCrmValidationPipe(CompleteTaskDto)) input: CompleteTaskDto,
   ) {
     return { task: this.crm.completeTask(id, input.completed) };
   }
